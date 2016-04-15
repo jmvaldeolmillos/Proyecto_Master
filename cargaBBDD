@@ -1,0 +1,9 @@
+# Ejecución de scripts de Python
+
+# Borramos la tabla anterior historico
+
+csvsql -d';' -i postgresql --table 'historico' data/historicook.csv | psql -d airquality
+
+# Borramos la tabla anterior estaciones
+
+csvsql -d';' -i postgresql --table 'estaciones' data/estacionesok.csv | psql -d airquality
