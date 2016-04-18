@@ -1,3 +1,4 @@
+#!/bin/bash
 # Setup your workspace
 BASE_DIR=/Proyecto_Master
 DB_PATH=$BASE_DIR/airqualityCyL.db
