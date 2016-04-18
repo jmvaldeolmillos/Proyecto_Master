@@ -1,9 +1,21 @@
-# Ejecución de scripts de Python
+# Setup your workspace
+BASE_DIR=/Proyecto_Master
+DB_PATH=$BASE_DIR/airqualityCyL.db
+DATA_DIR = $BASE_DIR/data
 
-# Borramos la tabla anterior historico
+# First remove the existing database file, if any
+rm -f $DB_PATH
 
-csvsql -d';' -i postgresql --table 'historico' data/historicook.csv | psql -d airquality
+# creacion de las tablas
+csvsql  -d';' data/estacionesok.csv --tables estaciones | sqlite3 airqualityCyL.db
+csvsql  -d';' data/historicook.csv --tables historicos | sqlite3 airqualityCyL.db 
 
-# Borramos la tabla anterior estaciones
 
-csvsql -d';' -i postgresql --table 'estaciones' data/estacionesok.csv | psql -d airquality
+# carga de datos en las tablas.
+csvsql $DATA_DIR/historicook.csv  \
+    --db sqlite:///$DB_PATH --insert --no-create \
+    --tables historicos
+
+csvsql $DATA_DIR/estacionesok.csv  \
+    --db sqlite:///$DB_PATH --insert --no-create \
+    --tables estaciones
