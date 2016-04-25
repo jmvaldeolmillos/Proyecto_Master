@@ -4,7 +4,8 @@
 # Carga librerias
 import numpy as np
 import pandas as pd
-directory = "/home/jose/Proyecto_Master/"
+# Se debe cambiar el directory cuando se pase al servidor!!!!
+directory = "/Users/jose/Documents/Repos/Proyecto_Master"
 
 # Carga fichero estaciones
 estaciones = pd.read_csv(directory + '/data/estaciones.csv', sep=";")
