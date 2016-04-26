@@ -6,7 +6,7 @@ library(RSQLite)
 
 # connect to the sqlite file
 sqlite <- dbDriver("SQLite")
-con <- dbConnect(sqlite,"airqualityCyl.db")
+con <- dbConnect(sqlite,"~/Proyecto_Master/airqualityCyL.db")
 alltables <- dbListTables(con)
 
 # creacion de data frames
@@ -29,4 +29,8 @@ dfEstaciones$Operativa <- as.factor(dfEstaciones$Operativa)
 dfEstaciones$Provincia <- as.factor(dfEstaciones$Provincia)
 dfEstaciones$Altura <- as.integer(dfEstaciones$Altura)
 
-str(dfEstaciones)
+# preparamos el mapa de estaciones. Pediente para Shiny el filtro de actividad (si o no)
+library(ggmap)
+map <- get_map(location = 'Spain', zoom = 8)
+mapPoints <- ggmap(map) + geom_point(aes(x = Longitud, y = Latitud), data = dfEstaciones, alpha = .5)
+mapPoints
