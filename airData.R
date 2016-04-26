@@ -1,12 +1,12 @@
 # configuación de directorio de trabajo
-setwd("~/Documents/Repos/Proyecto_Master")
+workingDirectory <- setwd("~/Documents/Repos/Proyecto_Master")
 
 # carga de librerias
 library(RSQLite)
 
 # connect to the sqlite file
 sqlite <- dbDriver("SQLite")
-con <- dbConnect(sqlite,"~/Proyecto_Master/airqualityCyL.db")
+con <- dbConnect(sqlite,paste0(workingDirectory,"/airqualityCyL.db"))
 alltables <- dbListTables(con)
 
 # creacion de data frames
@@ -21,7 +21,6 @@ dfHistoricos$Dia <- as.Date(dfHistoricos$Dia)
 dfHistoricos$Provincia <- as.factor(dfHistoricos$Provincia)
 dfHistoricos[,2] <- as.numeric(dfHistoricos[,2])
 dfHistoricos[,3:10] <- sapply(dfHistoricos[,3:10], as.integer)
-str(dfHistoricos)
 
 # cambio tipos de datos en dfEstaciones
 
@@ -31,6 +30,6 @@ dfEstaciones$Altura <- as.integer(dfEstaciones$Altura)
 
 # preparamos el mapa de estaciones. Pediente para Shiny el filtro de actividad (si o no)
 library(ggmap)
-map <- get_map(location = 'Spain', zoom = 8)
-mapPoints <- ggmap(map) + geom_point(aes(x = Longitud, y = Latitud), data = dfEstaciones, alpha = .5)
+map <- get_map(location = 'Valladolid', scale=1, zoom = 7, source="google", maptype = "terrain")
+mapPoints <- ggmap(map) + geom_point(aes(x = Longitud, y = Latitud), data = dfEstaciones, color="blue", size=2, alpha = .5)
 mapPoints
