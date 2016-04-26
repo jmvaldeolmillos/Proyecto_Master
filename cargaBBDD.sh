@@ -1,6 +1,6 @@
 #!/bin/bash
 # Setup your workspace
-BASE_DIR=/home/jose/Repos/Proyecto_Master
+BASE_DIR=/home/jose/Proyecto_Master
 DB_PATH=$BASE_DIR/airqualityCyL.db
 DATA_DIR=$BASE_DIR/data
 

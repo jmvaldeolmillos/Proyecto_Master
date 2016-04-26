@@ -3,9 +3,10 @@
 
 # Carga librerias
 import numpy as np
+import os
 import pandas as pd
 # Se debe cambiar el directory cuando se pase al servidor!!!!
-directory = "/Users/jose/Documents/Repos/Proyecto_Master"
+directory = os.getcwd()
 
 # Carga fichero estaciones
 estaciones = pd.read_csv(directory + '/data/estaciones.csv', sep=";")
@@ -49,6 +50,8 @@ for col in estaciones.columns:
     estaciones[col] = estaciones[col].str.replace('ó', 'o')
     estaciones[col] = estaciones[col].str.replace('ú', 'u')
     estaciones[col] = estaciones[col].str.replace('ñ', 'n')
+    estaciones[col] = estaciones[col].str.replace('Ñ', 'N')
+    estaciones[col] = estaciones[col].str.replace('II', '2')
 
 # Paso a minusculas
 for col in estaciones.columns:
