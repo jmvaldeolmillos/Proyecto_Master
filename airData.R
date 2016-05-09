@@ -1,5 +1,5 @@
 # configuación de directorio de trabajo
-workingDirectory <- setwd("~/Documents/Repos/Proyecto_Master")
+workingDirectory <- setwd("~/Repos/Proyecto_Master")
 
 # carga de librerias
 library(RSQLite)
@@ -21,6 +21,8 @@ dfHistoricos$Dia <- as.Date(dfHistoricos$Dia)
 dfHistoricos$Provincia <- as.factor(dfHistoricos$Provincia)
 dfHistoricos[,2] <- as.numeric(dfHistoricos[,2])
 dfHistoricos[,3:10] <- sapply(dfHistoricos[,3:10], as.integer)
+dfHistoricos$Provincia <- NULL
+dfHistoricos$Estacion <- as.factor(dfHistoricos$Estacion)
 
 # cambio tipos de datos en dfEstaciones
 
@@ -33,3 +35,24 @@ library(ggmap)
 map <- get_map(location = 'Valladolid', scale=1, zoom = 7, source="google", maptype = "terrain")
 mapPoints <- ggmap(map) + geom_point(aes(x = Longitud, y = Latitud), data = dfEstaciones, color="blue", size=2, alpha = .5)
 mapPoints
+
+# Gráfica de NO2
+hist(dfHistoricos$NO2, main = "Histogram of nitrogen dioxide", xlab = "Nitrogen dioxide (ppb)")
+
+# Gráfica de CO
+hist(dfHistoricos$CO, main = "Histogram of nitrogen dioxide", xlab = "Nitrogen dioxide (ppb)")
+
+# Gráfica de NO
+hist(dfHistoricos$NO, main = "Histogram of nitrogen oxide", xlab = "Nitrogen oxide (ppb)")
+
+# Gráfica de Ozone
+hist(dfHistoricos$Ozono, main = "Histogram of Ozone", xlab = "Ozone")
+
+# Gráfica de NO2
+hist(dfHistoricos$NO2, main = "Histogram of nitrogen dioxide", xlab = "Nitrogen dioxide (ppb)")
+
+# Gráfica de PM10
+hist(dfHistoricos$PM10, main = "Histogram of PM10", xlab = "PM10")
+
+# Gráfica de PM25
+hist(dfHistoricos$PM25, main = "Histogram of PM25", xlab = "PM25")
