@@ -12,30 +12,30 @@ directory = os.getcwd()
 estaciones = pd.read_csv(directory + '/data/estaciones.csv', sep=";")
 
 # Renombrado columnas
-estaciones.columns = ['Estacion', 'Localizacion', 'Provincia','Longitud','Latitud','Altura','Operativa']
+estaciones.columns = ['estacion', 'localizacion', 'provincia','longitud','latitud','altura','operativa']
 
 # Limpieza de datos
-estaciones.Localizacion = estaciones.Localizacion.str.replace('C/', 'Calle')
-estaciones.Altura = estaciones.Altura.str.replace('m', '')
-estaciones.Altura = estaciones.Altura.str.rstrip()
+estaciones.localizacion = estaciones.localizacion.str.replace('C/', 'Calle')
+estaciones.altura = estaciones.altura.str.replace('m', '')
+estaciones.altura = estaciones.altura.str.rstrip()
 
-estaciones.Longitud = estaciones.Longitud.str.replace('W',' W')
-estaciones.Longitud = estaciones.Longitud.str.replace('  ',' ')
-estaciones.Longitud = estaciones.Longitud.str.replace('º',' ')
-estaciones.Longitud = estaciones.Longitud.str.replace("'",' ')
-estaciones.Longitud = estaciones.Longitud.str.replace('"',' ')
-estaciones.Longitud = estaciones.Longitud.str.replace("’",' ')
-estaciones.Longitud = estaciones.Longitud.str.replace("”",' ')
-estaciones.Longitud = estaciones.Longitud.str.replace("´",' ')
+estaciones.longitud = estaciones.longitud.str.replace('W',' W')
+estaciones.longitud = estaciones.longitud.str.replace('  ',' ')
+estaciones.longitud = estaciones.longitud.str.replace('º',' ')
+estaciones.longitud = estaciones.longitud.str.replace("'",' ')
+estaciones.longitud = estaciones.longitud.str.replace('"',' ')
+estaciones.longitud = estaciones.longitud.str.replace("’",' ')
+estaciones.longitud = estaciones.longitud.str.replace("”",' ')
+estaciones.longitud = estaciones.longitud.str.replace("´",' ')
 
-estaciones.Latitud = estaciones.Latitud.str.replace('N',' N')
-estaciones.Latitud = estaciones.Latitud.str.replace('  ',' ')
-estaciones.Latitud = estaciones.Latitud.str.replace('º',' ')
-estaciones.Latitud = estaciones.Latitud.str.replace("'",' ')
-estaciones.Latitud = estaciones.Latitud.str.replace('"',' ')
-estaciones.Latitud = estaciones.Latitud.str.replace("’",' ')
-estaciones.Latitud = estaciones.Latitud.str.replace("”",' ')
-estaciones.Latitud = estaciones.Latitud.str.replace("´",' ')
+estaciones.latitud = estaciones.latitud.str.replace('N',' N')
+estaciones.latitud = estaciones.latitud.str.replace('  ',' ')
+estaciones.latitud = estaciones.latitud.str.replace('º',' ')
+estaciones.latitud = estaciones.latitud.str.replace("'",' ')
+estaciones.latitud = estaciones.latitud.str.replace('"',' ')
+estaciones.latitud = estaciones.latitud.str.replace("’",' ')
+estaciones.latitud = estaciones.latitud.str.replace("”",' ')
+estaciones.latitud = estaciones.latitud.str.replace("´",' ')
 
 # Remplazando acentos
 for col in estaciones.columns:
@@ -55,7 +55,7 @@ for col in estaciones.columns:
 
 # Paso a minusculas
 for col in estaciones.columns:
-    if col != "Provincia":
+    if col != "provincia":
         estaciones[col] = estaciones[col].str.title()
 
 # Paso de grados, minutos y segundos a decimal para Geolocalizacion
@@ -68,11 +68,11 @@ def pasoDMS2DD(cadena):
         dd *= -1
     return dd
 
-# aplicamos a Longitud
-estaciones.Longitud = estaciones.Longitud.map(pasoDMS2DD)
+# aplicamos a longitud
+estaciones.longitud = estaciones.longitud.map(pasoDMS2DD)
 
-# aplicamos a Latitud
-estaciones.Latitud = estaciones.Latitud.map(pasoDMS2DD)
+# aplicamos a latitud
+estaciones.latitud = estaciones.latitud.map(pasoDMS2DD)
 
 # Guardar en fichero estaciones.
 estaciones.to_csv('data/estacionesok.csv', sep=";", index=None, encoding="utf-8")
@@ -81,10 +81,10 @@ estaciones.to_csv('data/estacionesok.csv', sep=";", index=None, encoding="utf-8"
 historico = pd.read_csv('data/historico.csv',sep=";",low_memory=False)
 
 # Renombrado columnas
-historico.columns = ['Dia','CO','NO','NO2','Ozono','PM10','SH2','PM25','PST','SO2','Provincia','Estacion']
+historico.columns = ['date','co','no','no2','ozone','pm10','sh2','pm25','pst','so2','provincia','estacion']
 
 # Limpieza de datos
-for col in ['Provincia', 'Estacion']:
+for col in ['provincia', 'estacion']:
     historico[col] = historico[col].str.replace('Á', 'A')
     historico[col] = historico[col].str.replace('É', 'E')
     historico[col] = historico[col].str.replace('Í', 'I')
