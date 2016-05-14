@@ -2,6 +2,7 @@
 workingDirectory <- setwd("~/Documents/Repos/Proyecto_Master")
 
 # carga de librerias
+if (!require("RSQLite")) install.packages("RSQLite")
 library(RSQLite)
 
 # connect to the sqlite file
@@ -31,6 +32,7 @@ dfEstaciones$provincia <- as.factor(dfEstaciones$provincia)
 dfEstaciones$altura <- as.integer(dfEstaciones$altura)
 
 # preparamos el mapa de estaciones. Pediente para Shiny el filtro de actividad (si o no)
+if (!require("ggmap")) install.packages("ggmap")
 library(ggmap)
 map <- get_map(location = 'Valladolid', scale=1, zoom = 7, source="google", maptype = "terrain")
 mapPoints <- ggmap(map) + geom_point(aes(x = longitud, y = latitud), data = dfEstaciones, color="blue", size=2, alpha = .5)
@@ -56,3 +58,22 @@ hist(dfHistoricos$pm10, main = "Histogram of PM10", xlab = "PM10")
 
 # Gráfica de pm25
 hist(dfHistoricos$pm25, main = "Histogram of PM25", xlab = "PM25")
+
+
+## Creacion de las GRAFICAS para SHINY con openair.
+# Actualmente no se poseen datos sobre velocidad y direccion del viento. Se han solicitado.
+
+if (!require("openair")) install.packages("openair", dependencies = TRUE)
+library(openair)
+
+
+dat <- dfHistoricos
+dat$ws <- as.integer(NA)
+dat$wd <- as.integer(NA)
+
+# Empezamos ploteando los principales componentes de estudio
+polarPlot(dat, pollutant = "so2")
+polarPlot(dat, pollutant = "no")
+polarPlot(dat, pollutant = "no2")
+summaryPlot(dat)
+
