@@ -45,10 +45,10 @@ hist(dfHistoricos$no2, main = "Histogram of nitrogen dioxide", xlab = "Nitrogen 
 hist(dfHistoricos$co, main = "Histogram of nitrogen dioxide", xlab = "Nitrogen dioxide (ppb)")
 
 # Gráfica de no
-hist(dfHistoricos$no, main = "Histogram of nitrogen oxide", xlab = "Nitrogen oxide (ppb)")
+hist(dfHistoricos$nox, main = "Histogram of nitrogen oxide", xlab = "Nitrogen oxide (ppb)")
 
 # Gráfica de ozone
-hist(dfHistoricos$ozone, main = "Histogram of Ozone", xlab = "Ozone")
+hist(dfHistoricos$o3, main = "Histogram of Ozone", xlab = "Ozone")
 
 # Gráfica de so2
 hist(dfHistoricos$so2, main = "Histogram of nitrogen dioxide", xlab = "Nitrogen dioxide (ppb)")

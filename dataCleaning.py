@@ -81,7 +81,7 @@ estaciones.to_csv('data/estacionesok.csv', sep=";", index=None, encoding="utf-8"
 historico = pd.read_csv('data/historico.csv',sep=";",low_memory=False)
 
 # Renombrado columnas
-historico.columns = ['date','co','no','no2','ozone','pm10','sh2','pm25','pst','so2','provincia','estacion']
+historico.columns = ['date','co','nox','no2','o3','pm10','sh2','pm25','pst','so2','provincia','estacion']
 
 # Limpieza de datos
 for col in ['provincia', 'estacion']:
