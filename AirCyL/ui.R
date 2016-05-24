@@ -8,13 +8,27 @@
 #
 
 library(shiny)
-shinyUI(navbarPage("AIRCyL",
-                   tabPanel("Resumen"),
-                   tabPanel("Calendario"),
-                   tabPanel("Evolución"),
-                   tabPanel("Tendencia"),
-                   tabPanel("Variación"),
-                   tabPanel("Scatter"),
-                   tabPanel("Relación"),
-                   tabPanel("Niveles Tendencia")
+
+# Define UI for application that draws a histogram
+shinyUI(fluidPage(
+      
+      # Application title
+      titlePanel("AIRCYL - Gráficas Calidad del Aire en Castilla y León"),
+      
+      # Sidebar with a slider input for the number of bins
+      sidebarLayout(
+            sidebarPanel(
+                  selectInput("nProvincia",
+                              "Selección de Provincia:",
+                              c("Avila"="AVILA", "Burgos" = "BURGOS", "Leon" = "LEON", "Palencia" = "PALENCIA",
+                                "Salamanca" = "SALAMANCA", "Segovia" = "SEGOVIA", "Soria" = "SORIA", 
+                                "Valladolid" = "VALLADOLID", "Zamora" = "ZAMORA"))
+            ),
+            
+            # Show a plot of the generated distribution
+            mainPanel(
+                  plotOutput("distPlotGenerico"),
+                  plotOutput("distPlotProvincia")
+            )
+      )
 ))
