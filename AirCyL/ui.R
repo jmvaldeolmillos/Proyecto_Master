@@ -7,28 +7,64 @@
 #    http://shiny.rstudio.com/
 #
 
-library(shiny)
-
-# Define UI for application that draws a histogram
-shinyUI(fluidPage(
-      
-      # Application title
-      titlePanel("AIRCYL - Gráficas Calidad del Aire en Castilla y León"),
-      
-      # Sidebar with a slider input for the number of bins
-      sidebarLayout(
-            sidebarPanel(
-                  selectInput("nProvincia",
-                              "Selección de Provincia:",
-                              c("Avila"="AVILA", "Burgos" = "BURGOS", "Leon" = "LEON", "Palencia" = "PALENCIA",
-                                "Salamanca" = "SALAMANCA", "Segovia" = "SEGOVIA", "Soria" = "SORIA", 
-                                "Valladolid" = "VALLADOLID", "Zamora" = "ZAMORA"))
-            ),
-            
-            # Show a plot of the generated distribution
-            mainPanel(
-                  plotOutput("distPlotGenerico"),
-                  plotOutput("distPlotProvincia")
+library(shinydashboard)
+      sidebar <- dashboardSidebar(
+            sidebarMenu(
+                  menuItem("SummaryPlot", tabName = "summaryplot", icon = icon("dashboard")),
+                  menuItem("CalendarPlot", tabName = "calendarplot", icon = icon("calendar")),
+                  menuItem("TimePlot", tabName = "timeplot", icon = icon("line-chart")),
+                  menuItem("SmoothTrend", tabName = "smoothtrend", icon = icon("area-chart")),
+                  menuItem("TimeVariation", tabName = "timevariation", icon = icon("line-chart")),
+                  menuItem("ScatterPlot", tabName = "scatterplot", icon = icon("signal")),
+                  menuItem("LinealRelation", tabName = "linealrelation", icon = icon("line-chart")),
+                  menuItem("TrendLevel", tabName = "trendlevel", icon = icon("signal"))
             )
       )
-))
+      
+      body <- dashboardBody(
+            tabItems(
+                  tabItem(tabName = "summaryplot",
+                          h2("Valores de calidad del aire generales y por provincia"),
+                          
+                          fluidRow(
+                                box(width=12, title = "Datos genericos", plotOutput("distPlotGenerico"))
+                              ),
+                          fluidRow(
+                                box(width=6, selectInput("nProvincia","Selección de Provincia:",
+                                                      c("Avila"="AVILA", "Burgos" = "BURGOS", "Leon" = "LEON", "Palencia" = "PALENCIA",
+                                                      "Salamanca" = "SALAMANCA", "Segovia" = "SEGOVIA", "Soria" = "SORIA", 
+                                                      "Valladolid" = "VALLADOLID", "Zamora" = "ZAMORA")
+                                ))
+                          ),
+                          fluidRow(
+                                box(width=12, title = "Datos por Provincia", plotOutput("distPlotProvincia"))
+                              )
+                  ),
+                  tabItem(tabName = "calendarplot",
+                          h2("Comportamiento de cada agente por día del año")
+                  ),
+                  tabItem(tabName = "timeplot",
+                          h2("Comportamiento de cada agente a lo largo del tiempo")
+                  ),
+                  tabItem(tabName = "smoothtrend",
+                          h2("Tendencia de cada agente por día del año")
+                  ),
+                  tabItem(tabName = "timevariation",
+                          h2("Variación de cada agente en el tiempo")
+                  ),
+                  tabItem(tabName = "scatterplot",
+                          h2("Comportamiento de cada agente")
+                  ),
+                  tabItem(tabName = "linealrelation",
+                          h2("Relaciones entre agentes por día del año")
+                  ),
+                  tabItem(tabName = "trendlevel",
+                          h2("Niveles de tendencia a lo largo del tiempo")
+                  )
+            )
+      )
+dashboardPage(
+      dashboardHeader(title = "AIRCYL"),
+      sidebar,
+      body
+)      
