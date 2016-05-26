@@ -8,6 +8,8 @@
 #
 
 library(shinydashboard)
+library(lubridate)
+library(stringi)
       sidebar <- dashboardSidebar(
             sidebarMenu(
                   menuItem("SummaryPlot", tabName = "summaryplot", icon = icon("dashboard")),
@@ -41,7 +43,23 @@ library(shinydashboard)
                               )
                   ),
                   tabItem(tabName = "calendarplot",
-                          h2("Comportamiento de cada agente por día del año")
+                          h2("Comportamiento de cada agente por día del año"),
+                          
+                          fluidRow(
+                                box(width=4, selectInput("nProvinciaC","Provincia:",
+                                                         stri_trans_general(mydata$provincia, id = "Title")      
+                                )),
+                                box(width=4, selectInput("nAnioC","Año:",
+                                                       sort((unique(substr(mydata$date, 7,10))))
+                                )),
+                                box(width=4, selectInput("nPollutantC","Componente químico:",
+                                                        c("CO"="co", "NO" = "nox", "NO2" = "no2", "O3" = "o3",
+                                                        "SO2" = "so2", "PM10" = "pm10", "PM25" = "pm25")
+                                ))
+                              ),
+                          fluidRow(
+                                box(width=12, title = "Calendario por Componente, Provincia y Año", plotOutput("distPlotCalendar"))
+                          )
                   ),
                   tabItem(tabName = "timeplot",
                           h2("Comportamiento de cada agente a lo largo del tiempo")

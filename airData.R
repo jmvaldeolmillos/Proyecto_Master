@@ -30,3 +30,4 @@ dfHistoricos$estacion <- as.factor(dfHistoricos$estacion)
 dfEstaciones$operativa <- as.factor(dfEstaciones$operativa)
 dfEstaciones$provincia <- as.factor(dfEstaciones$provincia)
 dfEstaciones$altura <- as.integer(dfEstaciones$altura)
+

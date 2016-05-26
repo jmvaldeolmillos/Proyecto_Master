@@ -43,4 +43,10 @@ shinyServer(function(input, output) {
             # draw the histogram with the specified number of bins
             summaryPlot(mydata = subset(mydata, provincia == nProvincia)[,c(1,5,6,7)], clip = TRUE)
       })
+      output$distPlotCalendar <- renderPlot({
+            nProvincia <- input$nProvinciaC
+            nAnio <- input$nAnioC
+            nPollutant <- input$nPollutantC
+            # draw the histogram with the specified number of bins
+            calendarPlot(mydata = subset(mydata, provincia == nProvincia), pollutant = nPollutant, year = nAnio) })
 })
