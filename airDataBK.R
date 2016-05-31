@@ -88,14 +88,16 @@ summaryPlot(mydata = subset(mydata, provincia == "VALLADOLID")[,c(1,5,6,7)], cli
 calendarPlot(mydata, pollutant = "o3", year=2003)
 
 # timePlot. Seleccionar mes, año y si se puede site o mejor provincia.
-timePlot(selectByDate(mydata, year = 2004, month = 03),
-         pollutant = c("co", "nox", "no2", "o3", "pm10", "so2"), type = 'site')
+timePlot(selectByDate(mydata, year = 1998, month = 05),
+         pollutant = c("nox", "no2", "o3", "so2"), type = 'site')
+timePlot(selectByDate(subset(mydata,provincia == "VALLADOLID"), year = 1998, month = 05),
+         pollutant = c("nox", "no2", "o3", "so2"), type = 'site')
 
 # SmoothTrend OK. seleccionar pollutant. Y provincia
 smoothTrend(mydata, pollutant = "o3", ylab = "concentration (ppb)",
             main = "monthly mean o3")
 # timeVariation OK. Seleccionar Provincia y en vez de por horas, como sale abajo.
-timeVariation(mydata, pollutant = c("nox", "co", "no2", "o3"), normalise = TRUE)
+timeVariation(subset(mydata,provincia == "AVILA"), pollutant = c("nox", "co", "no2", "o3"), normalise = TRUE)
 
 # scatterPlot. controlar eje x e y, año y provincia.
 scatterPlot(mydata, x = "nox", y = "no2", method = "hexbin", col= "jet")

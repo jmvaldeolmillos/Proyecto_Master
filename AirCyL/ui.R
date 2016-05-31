@@ -6,10 +6,7 @@
 # 
 #    http://shiny.rstudio.com/
 #
-
 library(shinydashboard)
-library(lubridate)
-library(stringi)
       sidebar <- dashboardSidebar(
             sidebarMenu(
                   menuItem("SummaryPlot", tabName = "summaryplot", icon = icon("dashboard")),
@@ -29,55 +26,120 @@ library(stringi)
                           h2("Valores de calidad del aire generales y por provincia"),
                           
                           fluidRow(
-                                box(width=12, title = "Datos genericos", plotOutput("distPlotGenerico"))
-                              ),
-                          fluidRow(
-                                box(width=6, selectInput("nProvincia","Selección de Provincia:",
-                                                      c("Avila"="AVILA", "Burgos" = "BURGOS", "Leon" = "LEON", "Palencia" = "PALENCIA",
-                                                      "Salamanca" = "SALAMANCA", "Segovia" = "SEGOVIA", "Soria" = "SORIA", 
-                                                      "Valladolid" = "VALLADOLID", "Zamora" = "ZAMORA")
-                                ))
+                                box(width=12, title = "Datos genericos", status = "primary", 
+                                    solidHeader = TRUE, collapsible = TRUE, plotOutput("distPlotGenerico"))
                           ),
                           fluidRow(
-                                box(width=12, title = "Datos por Provincia", plotOutput("distPlotProvincia"))
-                              )
-                  ),
-                  tabItem(tabName = "calendarplot",
-                          h2("Comportamiento de cada agente por día del año"),
-                          
+                                box(width=6, selectInput("nProvincia","Selección de Provincia:", lProvincia))
+                          ),
                           fluidRow(
-                                box(width=4, selectInput("nProvinciaC","Provincia:",
-                                                         stri_trans_general(mydata$provincia, id = "Title")      
-                                )),
-                                box(width=4, selectInput("nAnioC","Año:",
-                                                       sort((unique(substr(mydata$date, 7,10))))
-                                )),
-                                box(width=4, selectInput("nPollutantC","Componente químico:",
-                                                        c("CO"="co", "NO" = "nox", "NO2" = "no2", "O3" = "o3",
-                                                        "SO2" = "so2", "PM10" = "pm10", "PM25" = "pm25")
-                                ))
-                              ),
-                          fluidRow(
-                                box(width=12, title = "Calendario por Componente, Provincia y Año", plotOutput("distPlotCalendar"))
+                                box(width=12, title = "Datos por Provincia Seleccionada", 
+                                    status = "primary", plotOutput("distPlotProvincia"))
                           )
                   ),
+                  
+                  tabItem(tabName = "calendarplot",
+                          h2("Comportamiento de cada agente por día y por Provincia"),
+                          
+                          fluidRow(
+                              box(width=4, selectInput("n2Provincia","Provincia:", lProvincia)),
+                              box(width=4, selectInput("n2Anio","Año:", lAnio)),
+                              box(width=4, selectInput("n2Pollutant","Componente químico:",lPollutant))
+                              ),
+                          
+                          fluidRow(
+                              box(width=12, title = "Calendario por Componente Provincia y Año", 
+                                  status = "primary", plotOutput("distPlotCalendar"))
+                              )
+                  ),
+                  
                   tabItem(tabName = "timeplot",
-                          h2("Comportamiento de cada agente a lo largo del tiempo")
+                          h2("Comportamiento de cada agente a lo largo del tiempo"),
+                          fluidRow(
+                              box(width=4, selectInput("n3Month","Mes:", lMonth)),
+                              box(width=4, selectInput("n3Anio","Año:", lAnio)),
+                              box(width=4, selectInput("n3Provincia","Provincia:",lProvincia))
+                          ),
+                          
+                          fluidRow(
+                                box(width=12, title = "Comportamiento en el tiempo", 
+                                    status = "primary", plotOutput("distTimePlot"))
+                          )
                   ),
+                  
                   tabItem(tabName = "smoothtrend",
-                          h2("Tendencia de cada agente por día del año")
+                          h2("Tendencia de cada agente por día del año"),
+                          fluidRow(
+                                box(width=4, selectInput("n4Provincia","Provincia:",lProvincia)),
+                                box(width=4, selectInput("n4Pollutant","Componente químico:",lPollutant))
+                          ),
+                          
+                          fluidRow(
+                                box(width=12, title = "Tendencia de cada agente por día del año", 
+                                    status = "primary", plotOutput("distSmoothTrend"))
+                          )
                   ),
+                  
                   tabItem(tabName = "timevariation",
-                          h2("Variación de cada agente en el tiempo")
+                          h2("Variación de cada agente en el tiempo"),
+                          fluidRow(
+                                box(width=4, selectInput("n5Provincia","Provincia:",lProvincia))
+                          ),
+                          
+                          fluidRow(
+                                box(width=12, title = "Variación de cada agente en el tiempo", 
+                                    status = "primary", plotOutput("distTimeVariation"))
+                          )
                   ),
+                  
                   tabItem(tabName = "scatterplot",
-                          h2("Comportamiento de cada agente")
+                          h2("Comportamiento de cada agente"),
+                          
+                          fluidRow(
+                                box(width=4, selectInput("n6Provincia","Provincia:",lProvincia)),
+                                box(width=4, selectInput("n6Anio","Año:",lAnio))
+                          ),
+                          fluidRow(
+                                box(width=4, selectInput("n6EjeX","Componente en eje X:",lPollutant)),
+                                box(width=4, selectInput("n6EjeY","Componente en eje Y:",lPollutant)),
+                                box(width=4, selectInput("n6Method","Metodo:",c("hexbin"="hexbin", "density"="density")))
+                          ),
+                          
+                          fluidRow(
+                                box(width=12, title = paste("Relaciones entre dos Componetes a lo largo del tiempo"), 
+                                    status = "primary", plotOutput("distScatterPlot"))
+                          )
                   ),
+                  
                   tabItem(tabName = "linealrelation",
-                          h2("Relaciones entre agentes por día del año")
+                          h2("Relaciones entre agentes a lo largo del tiempo"),
+                          
+                          fluidRow(
+                                box(width=4, selectInput("n7Provincia","Provincia:",lProvincia)),
+                                box(width=4, selectInput("n7EjeX","Componente en eje X:",lPollutant)),
+                                box(width=4, selectInput("n7EjeY","Componente en eje Y:",lPollutant))
+                               
+                          ),
+                          
+                          fluidRow(
+                                box(width=12, title = "Relaciones entre dos Componetes a lo largo del tiempo", 
+                                    status = "primary", plotOutput("distLinealRelationSum"))
+                          )
                   ),
+                  
                   tabItem(tabName = "trendlevel",
-                          h2("Niveles de tendencia a lo largo del tiempo")
+                          h2("Niveles de tendencia a lo largo del tiempo"),
+                          
+                          fluidRow(
+                                box(width=4, selectInput("n8Provincia","Provincia:",lProvincia)),
+                                box(width=4, selectInput("n8EjeX","Componente:",lPollutant))
+
+                          ),
+                          
+                          fluidRow(
+                                box(width=12, title = paste("Niveles de tendencia a lo largo del tiempo"), 
+                                    status = "primary", plotOutput("distTrendLevel"))
+                          )
                   )
             )
       )
