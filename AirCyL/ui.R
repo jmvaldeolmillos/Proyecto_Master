@@ -16,7 +16,9 @@ library(shinydashboard)
                   menuItem("TimeVariation", tabName = "timevariation", icon = icon("line-chart")),
                   menuItem("ScatterPlot", tabName = "scatterplot", icon = icon("signal")),
                   menuItem("LinealRelation", tabName = "linealrelation", icon = icon("line-chart")),
-                  menuItem("TrendLevel", tabName = "trendlevel", icon = icon("signal"))
+                  menuItem("TrendLevel", tabName = "trendlevel", icon = icon("signal")),
+                  menuItem("Maps Situation", tabName = "mapssituation", icon = icon("map")),
+                  menuItem("Pollution Maps", tabName = "ozonemaps", icon = icon("map"))
             )
       )
       
@@ -131,14 +133,45 @@ library(shinydashboard)
                           h2("Niveles de tendencia a lo largo del tiempo"),
                           
                           fluidRow(
-                                box(width=4, selectInput("n8Provincia","Provincia:",lProvincia)),
-                                box(width=4, selectInput("n8EjeX","Componente:",lPollutant))
-
+                                box(width=4, selectInput("n8Provincia","Provincia:",lProvincia))
+                                
                           ),
                           
                           fluidRow(
-                                box(width=12, title = paste("Niveles de tendencia a lo largo del tiempo"), 
+                                box(width=12, title = "Niveles de tendencia a lo largo del tiempo", 
                                     status = "primary", plotOutput("distTrendLevel"))
+                          )
+                  ),
+                  tabItem(tabName = "mapssituation",
+                          h2("Situacion geografica de las estaciones"),
+                          
+                          fluidRow(
+                                box(width=3, selectInput("n9Provincia","Provincia:",lProvincia)),
+                                box(width=3, selectInput("n9Actividad","Con actividad:",c("Todas" = "Todas", "Si" = "Si", "No" = "No"))),
+                                box(width=2, numericInput("n9Zoom","Zoom:", 6, min = 5, max = 15)),
+                                box(width=2, numericInput("n9Size","Size:", 3, min = 2, max = 6)),
+                                box(width=2, numericInput("n9Alpha","Alpha:", 0.5, min = 0.1, max = 0.9))
+                          ),
+                          
+                          fluidRow(
+                                box(width=12, title = "Ubicación geográfica de las estaciones", 
+                                    status = "primary", plotOutput("distMapsSituation"))
+                          )
+                  ),
+                  tabItem(tabName = "ozonemaps",
+                          h2("Cantidad de Ozono por provincia"),
+                          
+                          fluidRow(
+                                box(width=12, title = "Medición Ozono Anual por Provincia", collapsible = TRUE,
+                                    status = "primary", plotOutput("distPlotAnnual"))
+                          ),
+                          fluidRow(
+                                box(width=12, title = "Media Ozono por Provincia y Estación del Año", collapsible = TRUE,
+                                    status = "primary", plotOutput("distPlotMeans"))
+                          ),
+                          fluidRow(
+                                box(width=12, title = "Máxima Ozono por Provincia y Estación del Año", collapsible = TRUE,
+                                    status = "primary", plotOutput("distPlotPeaks"))
                           )
                   )
             )

@@ -12,30 +12,30 @@ directory = os.getcwd()
 estaciones = pd.read_csv(directory + '/data/estaciones.csv', sep=";")
 
 # Renombrado columnas
-estaciones.columns = ['estacion', 'localizacion', 'provincia','longitud','latitud','altura','operativa']
+estaciones.columns = ['station', 'localization', 'province','longitude','latitude','height','operative']
 
 # Limpieza de datos
-estaciones.localizacion = estaciones.localizacion.str.replace('C/', 'Calle')
-estaciones.altura = estaciones.altura.str.replace('m', '')
-estaciones.altura = estaciones.altura.str.rstrip()
+estaciones.localization = estaciones.localization.str.replace('C/', 'Calle')
+estaciones.height = estaciones.height.str.replace('m', '')
+estaciones.height = estaciones.height.str.rstrip()
 
-estaciones.longitud = estaciones.longitud.str.replace('W',' W')
-estaciones.longitud = estaciones.longitud.str.replace('  ',' ')
-estaciones.longitud = estaciones.longitud.str.replace('º',' ')
-estaciones.longitud = estaciones.longitud.str.replace("'",' ')
-estaciones.longitud = estaciones.longitud.str.replace('"',' ')
-estaciones.longitud = estaciones.longitud.str.replace("’",' ')
-estaciones.longitud = estaciones.longitud.str.replace("”",' ')
-estaciones.longitud = estaciones.longitud.str.replace("´",' ')
+estaciones.longitude = estaciones.longitude.str.replace('W',' W')
+estaciones.longitude = estaciones.longitude.str.replace('  ',' ')
+estaciones.longitude = estaciones.longitude.str.replace('º',' ')
+estaciones.longitude = estaciones.longitude.str.replace("'",' ')
+estaciones.longitude = estaciones.longitude.str.replace('"',' ')
+estaciones.longitude = estaciones.longitude.str.replace("’",' ')
+estaciones.longitude = estaciones.longitude.str.replace("”",' ')
+estaciones.longitude = estaciones.longitude.str.replace("´",' ')
 
-estaciones.latitud = estaciones.latitud.str.replace('N',' N')
-estaciones.latitud = estaciones.latitud.str.replace('  ',' ')
-estaciones.latitud = estaciones.latitud.str.replace('º',' ')
-estaciones.latitud = estaciones.latitud.str.replace("'",' ')
-estaciones.latitud = estaciones.latitud.str.replace('"',' ')
-estaciones.latitud = estaciones.latitud.str.replace("’",' ')
-estaciones.latitud = estaciones.latitud.str.replace("”",' ')
-estaciones.latitud = estaciones.latitud.str.replace("´",' ')
+estaciones.latitude = estaciones.latitude.str.replace('N',' N')
+estaciones.latitude = estaciones.latitude.str.replace('  ',' ')
+estaciones.latitude = estaciones.latitude.str.replace('º',' ')
+estaciones.latitude = estaciones.latitude.str.replace("'",' ')
+estaciones.latitude = estaciones.latitude.str.replace('"',' ')
+estaciones.latitude = estaciones.latitude.str.replace("’",' ')
+estaciones.latitude = estaciones.latitude.str.replace("”",' ')
+estaciones.latitude = estaciones.latitude.str.replace("´",' ')
 
 # Remplazando acentos
 for col in estaciones.columns:
@@ -55,7 +55,7 @@ for col in estaciones.columns:
 
 # Paso a minusculas
 for col in estaciones.columns:
-    if col != "provincia":
+    if col != "province":
         estaciones[col] = estaciones[col].str.title()
 
 # Paso de grados, minutos y segundos a decimal para Geolocalizacion
@@ -69,10 +69,10 @@ def pasoDMS2DD(cadena):
     return dd
 
 # aplicamos a longitud
-estaciones.longitud = estaciones.longitud.map(pasoDMS2DD)
+estaciones.longitude = estaciones.longitude.map(pasoDMS2DD)
 
 # aplicamos a latitud
-estaciones.latitud = estaciones.latitud.map(pasoDMS2DD)
+estaciones.latitude = estaciones.latitude.map(pasoDMS2DD)
 
 # Guardar en fichero estaciones.
 estaciones.to_csv('data/estacionesok.csv', sep=";", index=None, encoding="utf-8")
@@ -81,7 +81,7 @@ estaciones.to_csv('data/estacionesok.csv', sep=";", index=None, encoding="utf-8"
 historico = pd.read_csv('data/historico.csv',sep=";",low_memory=False)
 
 # Renombrado columnas
-historico.columns = ['date','co','nox','no2','o3','pm10','sh2','pm25','pst','so2','provincia','estacion']
+historico.columns = ['date','co','nox','no2','o3','pm10','sh2','pm25','pst','so2','province','station']
 
 # Limpieza de datos
 for col in ['provincia', 'estacion']:
