@@ -9,16 +9,17 @@
 library(shinydashboard)
       sidebar <- dashboardSidebar(
             sidebarMenu(
-                  menuItem("SummaryPlot", tabName = "summaryplot", icon = icon("dashboard")),
-                  menuItem("CalendarPlot", tabName = "calendarplot", icon = icon("calendar")),
-                  menuItem("TimePlot", tabName = "timeplot", icon = icon("line-chart")),
-                  menuItem("SmoothTrend", tabName = "smoothtrend", icon = icon("area-chart")),
-                  menuItem("TimeVariation", tabName = "timevariation", icon = icon("line-chart")),
-                  menuItem("ScatterPlot", tabName = "scatterplot", icon = icon("signal")),
-                  menuItem("LinealRelation", tabName = "linealrelation", icon = icon("line-chart")),
-                  menuItem("TrendLevel", tabName = "trendlevel", icon = icon("signal")),
                   menuItem("Maps Situation", tabName = "mapssituation", icon = icon("map")),
-                  menuItem("Pollution Maps", tabName = "ozonemaps", icon = icon("map"))
+                  menuItem("Summary Plot", tabName = "summaryplot", icon = icon("dashboard")),
+                  menuItem("Calendar Plot", tabName = "calendarplot", icon = icon("calendar")),
+                  menuItem("Time Plot", tabName = "timeplot", icon = icon("line-chart")),
+                  menuItem("Time Variation", tabName = "timevariation", icon = icon("line-chart")),
+                  menuItem("Scatter Plot", tabName = "scatterplot", icon = icon("signal")),
+                  menuItem("Lineal Relation", tabName = "linealrelation", icon = icon("line-chart")),
+                  menuItem("Trend Level", tabName = "trendlevel", icon = icon("signal")),
+                  menuItem("Smooth Trend", tabName = "smoothtrend", icon = icon("area-chart")),
+                  menuItem("Theil Send", tabName = "theilsend", icon = icon("signal")),
+                  menuItem("Pollution Maps", tabName = "pollutantmaps", icon = icon("map"))
             )
       )
       
@@ -41,7 +42,7 @@ library(shinydashboard)
                   ),
                   
                   tabItem(tabName = "calendarplot",
-                          h2("Comportamiento de cada agente por día y por Provincia"),
+                          h2("Comportamiento de cada Componente por día y por Provincia"),
                           
                           fluidRow(
                               box(width=4, selectInput("n2Provincia","Provincia:", lProvincia)),
@@ -56,7 +57,7 @@ library(shinydashboard)
                   ),
                   
                   tabItem(tabName = "timeplot",
-                          h2("Comportamiento de cada agente a lo largo del tiempo"),
+                          h2("Comportamiento de cada Componente a lo largo del tiempo"),
                           fluidRow(
                               box(width=4, selectInput("n3Month","Mes:", lMonth)),
                               box(width=4, selectInput("n3Anio","Año:", lAnio)),
@@ -70,32 +71,32 @@ library(shinydashboard)
                   ),
                   
                   tabItem(tabName = "smoothtrend",
-                          h2("Tendencia de cada agente por día del año"),
+                          h2("Tendencia de cada Componente por día del año"),
                           fluidRow(
                                 box(width=4, selectInput("n4Provincia","Provincia:",lProvincia)),
                                 box(width=4, selectInput("n4Pollutant","Componente químico:",lPollutant))
                           ),
                           
                           fluidRow(
-                                box(width=12, title = "Tendencia de cada agente por día del año", 
+                                box(width=12, title = "Tendencia de cada Componente por día del año", 
                                     status = "primary", plotOutput("distSmoothTrend"))
                           )
                   ),
                   
                   tabItem(tabName = "timevariation",
-                          h2("Variación de cada agente en el tiempo"),
+                          h2("Variación de cada Componente en el tiempo"),
                           fluidRow(
                                 box(width=4, selectInput("n5Provincia","Provincia:",lProvincia))
                           ),
                           
                           fluidRow(
-                                box(width=12, title = "Variación de cada agente en el tiempo", 
+                                box(width=12, title = "Variación de cada Componente en el tiempo", 
                                     status = "primary", plotOutput("distTimeVariation"))
                           )
                   ),
                   
                   tabItem(tabName = "scatterplot",
-                          h2("Comportamiento de cada agente"),
+                          h2("Comportamiento de cada Componente"),
                           
                           fluidRow(
                                 box(width=4, selectInput("n6Provincia","Provincia:",lProvincia)),
@@ -114,7 +115,7 @@ library(shinydashboard)
                   ),
                   
                   tabItem(tabName = "linealrelation",
-                          h2("Relaciones entre agentes a lo largo del tiempo"),
+                          h2("Relaciones entre Componentes a lo largo del tiempo"),
                           
                           fluidRow(
                                 box(width=4, selectInput("n7Provincia","Provincia:",lProvincia)),
@@ -142,6 +143,20 @@ library(shinydashboard)
                                     status = "primary", plotOutput("distTrendLevel"))
                           )
                   ),
+                  tabItem(tabName = "theilsend",
+                          h2("Tendencias de componentes a lo largo del tiempo"),
+                          
+                          fluidRow(
+                                box(width=4, selectInput("n10Provincia","Provincia:",lProvincia)),
+                                box(width=4, selectInput("n10Pollutant","Componente:",lPollutant))
+                                
+                          ),
+                          
+                          fluidRow(
+                                box(width=12, title = "Tendencias de componentes a lo largo del tiempo", 
+                                    status = "primary", plotOutput("distTheilSend"))
+                          )
+                  ),
                   tabItem(tabName = "mapssituation",
                           h2("Situacion geografica de las estaciones"),
                           
@@ -158,19 +173,23 @@ library(shinydashboard)
                                     status = "primary", plotOutput("distMapsSituation"))
                           )
                   ),
-                  tabItem(tabName = "ozonemaps",
-                          h2("Cantidad de Ozono por provincia"),
+                  tabItem(tabName = "pollutantmaps",
+                          h2("Cantidad de Componente por provincia"),
                           
                           fluidRow(
-                                box(width=12, title = "Medición Ozono Anual por Provincia", collapsible = TRUE,
+                                box(width=4, selectInput("n11Pollutant","Componente químico:",lPollutant))
+                          ),
+                          
+                          fluidRow(
+                                box(width=12, title = "Medición de Anual de Componente por Provincia", collapsible = TRUE,
                                     status = "primary", plotOutput("distPlotAnnual"))
                           ),
                           fluidRow(
-                                box(width=12, title = "Media Ozono por Provincia y Estación del Año", collapsible = TRUE,
+                                box(width=12, title = "Media de Componente por Provincia y Estación del Año", collapsible = TRUE,
                                     status = "primary", plotOutput("distPlotMeans"))
                           ),
                           fluidRow(
-                                box(width=12, title = "Máxima Ozono por Provincia y Estación del Año", collapsible = TRUE,
+                                box(width=12, title = "Máxima de Componente por Provincia y Estación del Año", collapsible = TRUE,
                                     status = "primary", plotOutput("distPlotPeaks"))
                           )
                   )

@@ -10,9 +10,12 @@
 library(shiny)
 if (!require("openair")) install.packages("openair", dependencies = TRUE)
 library(openair)
-# require("airData.R")
 if (!require("ggmap")) install.packages("ggmap")
 library(ggmap)
+if (!require("plyr")) install.packages("plyr")
+library(plyr)
+if (!require("lubridate")) install.packages("lubridate")
+library(lubridate)
 
 # Define server logic required to draw a histogram
 shinyServer(function(input, output) {
@@ -24,6 +27,7 @@ shinyServer(function(input, output) {
       #     when inputs change
       #  2) Its output type is a plot
       
+      # Genéricos
       output$distPlotGenerico <- renderPlot({
             
             # draw the histogram with the specified number of bins
@@ -50,6 +54,39 @@ shinyServer(function(input, output) {
             else
                   calendarPlot(mydata, pollutant = nPollutant, year = nAnio)
       })
+      output$distMapsSituation <- renderPlot({
+            nProvincia <- input$n9Provincia
+            nActividad <- input$n9Actividad
+            nZoom <- as.integer(input$n9Zoom)
+            nSize <- as.integer(input$n9Size)
+            nAlpha <- as.numeric(input$n9Alpha)
+            
+            # draw the Graphic
+            if (input$n9Provincia != "TODAS")
+                  if(nActividad != "Todas") {
+                        map <- get_map(location = nProvincia, scale=1, zoom = nZoom, source="google", maptype = "terrain")
+                        mapPoints <- ggmap(map) + geom_point(aes(x = longitude, y = latitude), 
+                                                             data = subset(mydata, province == nProvincia && operative == nActividad), color="blue", size=nSize, alpha = nAlpha)
+                  }
+            else {
+                  map <- get_map(location = nProvincia, scale=1, zoom = nZoom, source="google", maptype = "terrain")
+                  mapPoints <- ggmap(map) + geom_point(aes(x = longitude, y = latitude), 
+                                                       data = subset(mydata, province == nProvincia), color="blue", size=nSize, alpha = nAlpha)
+            }
+            else {
+                  if(nActividad != "Todas") {
+                        map <- get_map(location = "Valladolid", scale=1, zoom = nZoom, source="google", maptype = "terrain")
+                        mapPoints <- ggmap(map) + geom_point(aes(x = longitude, y = latitude), 
+                                                             data = subset(mydata, operative == nActividad), color="blue", size=nSize, alpha = nAlpha)
+                  }
+                  else {
+                        map <- get_map(location = "Valladolid", scale=1, zoom = nZoom, source="google", maptype = "terrain")
+                        mapPoints <- ggmap(map) + geom_point(aes(x = longitude, y = latitude), 
+                                                             data = mydata, color="blue", size=nSize, alpha = nAlpha)    
+                  }
+            }
+            mapPoints
+      })
       output$distTimePlot <- renderPlot({
             nMonth <- input$n3Month
             nAnio <- input$n3Anio
@@ -61,17 +98,6 @@ shinyServer(function(input, output) {
             else
                   timePlot(mydata, year = nAnio, month = nMonth,
                            pollutant = c("nox", "no2", "o3", "so2"), type = 'site')
-      })
-      output$distSmoothTrend <- renderPlot({
-            nProvincia <- input$n4Provincia
-            nPollutant <- input$n4Pollutant
-            # draw the Graphic
-            if (input$n4Provincia != "TODAS")
-                  smoothTrend(subset(mydata, province == nProvincia), pollutant = nPollutant, 
-                              ylab = "concentration (ppb)",main = paste("Media mensual", nPollutant))            
-            else
-            smoothTrend(mydata, pollutant = nPollutant, 
-                        ylab = "concentration (ppb)",main = paste("Media mensual", nPollutant))      
       })
       output$distTimeVariation <- renderPlot({
             nProvincia <- input$n5Provincia
@@ -113,6 +139,8 @@ shinyServer(function(input, output) {
             else
                   stop("Los valores del Eje X e Y no pueden ser iguales. Seleccionar Componentes diferentes.")
       })
+      
+      # Predicciones sobre componentes, comportamiento y estacionalidad
       output$distTrendLevel <- renderPlot({
             nProvincia <- input$n8Provincia
             # draw the Graphic
@@ -123,52 +151,52 @@ shinyServer(function(input, output) {
                   trendLevel(mydata, x="nox", y="no2", 
                              pollutant = "o3", border="white", n.levels=10, statistic = "max", limits = c(0,50)) 
             })
-      output$distMapsSituation <- renderPlot({
-            nProvincia <- input$n9Provincia
-            nActividad <- input$n9Actividad
-            nZoom <- as.integer(input$n9Zoom)
-            nSize <- as.integer(input$n9Size)
-            nAlpha <- as.numeric(input$n9Alpha)
+      output$distSmoothTrend <- renderPlot({
+            nProvincia <- input$n4Provincia
+            nPollutant <- input$n4Pollutant
+            # draw the Graphic
+            if (input$n4Provincia != "TODAS")
+                  smoothTrend(subset(mydata, province == nProvincia), pollutant = nPollutant, 
+                              ylab = "concentration (ppb)",main = paste("Media mensual", nPollutant))            
+            else
+                  smoothTrend(mydata, pollutant = nPollutant, 
+                              ylab = "concentration (ppb)",main = paste("Media mensual", nPollutant))      
+      })   
+      output$distTheilSend <- renderPlot({
+            nProvincia <- input$n10Provincia
+            nPollutant <- grep(input$n10Pollutant, colnames(mydata))
+            
+            Measurements <- mydata[,c(1,nPollutant,15)]
+            Measurements$date <- gsub("/", "-", Measurements$date)
+            Measurements$date <- dmy_hms(Measurements$date)
+            Measurements <- cutData(Measurements, type = "season")
+            if (input$n10Provincia != "TODAS")
+                  Measurements<- subset(Measurements, province == nProvincia)  
             
             # draw the Graphic
-            if (input$n9Provincia != "TODAS")
-                  if(nActividad != "Todas") {
-                        map <- get_map(location = nProvincia, scale=1, zoom = nZoom, source="google", maptype = "terrain")
-                        mapPoints <- ggmap(map) + geom_point(aes(x = longitude, y = latitude), 
-                                                            data = subset(mydata, province == nProvincia && operative == nActividad), color="blue", size=nSize, alpha = nAlpha)
-                  }
-                  else {
-                        map <- get_map(location = nProvincia, scale=1, zoom = nZoom, source="google", maptype = "terrain")
-                        mapPoints <- ggmap(map) + geom_point(aes(x = longitude, y = latitude), 
-                                                             data = subset(mydata, province == nProvincia), color="blue", size=nSize, alpha = nAlpha)
-                  }
-            else {
-                  if(nActividad != "Todas") {
-                        map <- get_map(location = "Valladolid", scale=1, zoom = nZoom, source="google", maptype = "terrain")
-                        mapPoints <- ggmap(map) + geom_point(aes(x = longitude, y = latitude), 
-                                                             data = subset(mydata, operative == nActividad), color="blue", size=nSize, alpha = nAlpha)
-                  }
-                  else {
-                        map <- get_map(location = "Valladolid", scale=1, zoom = nZoom, source="google", maptype = "terrain")
-                        mapPoints <- ggmap(map) + geom_point(aes(x = longitude, y = latitude), 
-                                                             data = mydata, color="blue", size=nSize, alpha = nAlpha)    
-                  }
-            }
-            mapPoints
+            TheilSen(Measurements, pollutant = input$n10Pollutant, ylab = paste(input$n10Pollutant,"unidades en ppb"), deseason = TRUE)
       })
+      
+      # Madas y Gráficos
       output$distPlotAnnual<- renderPlot({
-            # draw the Graphic
+            GMapsMeasurements <- clean_data_vis(input$n11Pollutant)
+            annual <- ddply(GMapsMeasurements, .(station), numcolwise(mean), na.rm = TRUE)
             
-            GoogleMapsPlot(annual, lat="latitude", long = "longitude", pollutant = "o3", maptype= "roadmap", col = "jet")
+            # draw the Graphic
+            GoogleMapsPlot(annual, lat="latitude", long = "longitude", pollutant = input$n11Pollutant, maptype= "roadmap", col = "jet")
       })
       output$distPlotMeans<- renderPlot({
-            # draw the Graphic
+            GMapsMeasurements <- clean_data_vis(input$n11Pollutant)
+            means <- ddply(GMapsMeasurements, .(station, season), numcolwise(mean), na.rm = TRUE)
             
-            GoogleMapsPlot(means, lat="latitude", long = "longitude", pollutant = "o3", type= "season", maptype= "roadmap", col = "jet")
+            # draw the Graphic
+            GoogleMapsPlot(means, lat="latitude", long = "longitude", pollutant = input$n11Pollutant, type= "season", maptype= "roadmap", col = "jet")
       })
       output$distPlotPeaks<- renderPlot({
-            # draw the Graphic
+            GMapsMeasurements <- clean_data_vis(input$n11Pollutant)
+            peaks <- ddply(GMapsMeasurements, .(station, season), numcolwise(max), na.rm = TRUE)
             
-            GoogleMapsPlot(peaks, lat="latitude", long = "longitude", pollutant = "o3", type= "season", maptype= "roadmap", col = "jet")
+            # draw the Graphic
+            GoogleMapsPlot(peaks, lat="latitude", long = "longitude", pollutant = input$n11Pollutant, type= "season", maptype= "roadmap", col = "jet")
       })
 })

@@ -42,27 +42,7 @@ mydata <- mydata[,c(2,18:19,3:11,1,12:15,17)]
 mydata$site <- paste(mydata$station, ' - ', mydata$province)
 mydata <- mydata[with(mydata, order(site, date)), ]
 
-# Generamos las variables para app
-
-lPollutant <- c("CO"="co", "NO" = "nox", "NO2" = "no2", "O3" = "o3", "SO2" = "so2", "PM10" = "pm10", "PM25" = "pm25")
-lAnio <- sort((unique(substr(mydata$date, 7,10))))
-lProvincia <- c("Todas" = "TODAS","Avila" = "AVILA", "Burgos" = "BURGOS", "Leon" = "LEON", "Palencia" = "PALENCIA", "Salamanca" = "SALAMANCA",
-                "Segovia" = "SEGOVIA", "Soria" = "SORIA", "Valladolid" = "VALLADOLID", "Zamora" = "ZAMORA")
-lSite <- unique(mydata$site)
-lMonth <- sort((unique(substr(mydata$date, 4,5))))
+# Eliminacion de datos auxiliares
 rm(dfEstaciones, dfHistoricos, alltables, con, sqlite)
-
-# Preparamos la parte de gráficos
-
-if (!require("plyr")) install.packages("plyr")
-library(plyr)
-if (!require("lubridate")) install.packages("lubridate")
-library(lubridate)
-
-o3Measurements <- mydata[,c(1,7,13,17,16)]
-o3Measurements$date <- gsub("/", "-", o3Measurements$date)
-o3Measurements$date <- dmy_hms(o3Measurements$date)
-o3Measurements <- cutData(o3Measurements, type = "season")
-annual <- ddply(o3Measurements, .(station), numcolwise(mean), na.rm = TRUE)
-means <- ddply(o3Measurements, .(station, season), numcolwise(mean), na.rm = TRUE)
-peaks <- ddply(o3Measurements, .(station, season), numcolwise(max), na.rm = TRUE)
+detach("package:RSQLite", unload=TRUE)
+workingDirectory <- setwd("~/Documents/Repos/Proyecto_Master/AirCyL")
