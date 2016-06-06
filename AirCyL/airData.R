@@ -1,13 +1,10 @@
-# configuación de directorio de trabajo
-workingDirectory <- setwd("~/Documents/Repos/Proyecto_Master")
-
 # carga de librerias
 if (!require("RSQLite")) install.packages("RSQLite")
 library(RSQLite)
 
 # connect to the sqlite file
 sqlite <- dbDriver("SQLite")
-con <- dbConnect(sqlite,paste0(workingDirectory,"/airqualityCyL.db"))
+con <- dbConnect(sqlite,"~/Documents/Repos/Proyecto_Master/airqualityCyL.db")
 alltables <- dbListTables(con)
 
 # creacion de data frames
@@ -29,7 +26,7 @@ dfHistoricos$station <- as.factor(dfHistoricos$station)
 
 dfEstaciones$operative <- as.factor(dfEstaciones$operative)
 dfEstaciones$province <- as.factor(dfEstaciones$province)
-dfEstaciones$hight <- as.integer(dfEstaciones$hight)
+dfEstaciones$height <- as.integer(dfEstaciones$height)
 
 #enriquecemos el dataframe con datos de las estaciones
 
@@ -45,4 +42,3 @@ mydata <- mydata[with(mydata, order(site, date)), ]
 # Eliminacion de datos auxiliares
 rm(dfEstaciones, dfHistoricos, alltables, con, sqlite)
 detach("package:RSQLite", unload=TRUE)
-workingDirectory <- setwd("~/Documents/Repos/Proyecto_Master/AirCyL")

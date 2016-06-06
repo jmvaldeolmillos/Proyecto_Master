@@ -1,5 +1,5 @@
 # Carga de librerias necesarias
-
+# rm(list = ls())
 if (!require("plyr")) install.packages("plyr")
 library(plyr)
 if (!require("lubridate")) install.packages("lubridate")
@@ -7,10 +7,10 @@ library(lubridate)
 if (!require("ggmap")) install.packages("ggmap")
 library(ggmap)
 
-source("airData.R")
+# Carga del fichero principal que ajusta el dataframe base
+source("~/Documents/Repos/Proyecto_Master/AirCyL/airData.R")
 
 # Funcion de manipulado para generación de graficos
-
 clean_data_vis <- function(componente) {
       nPollutant <- grep(componente, colnames(mydata))
       clean_data <- mydata[,c(1,nPollutant,13,17,16)]
@@ -21,7 +21,6 @@ clean_data_vis <- function(componente) {
 }
 
 # Creación de listas
-
 lPollutant <- c("CO"="co", "NO" = "nox", "NO2" = "no2", "O3" = "o3", "SO2" = "so2", "PM10" = "pm10", "PM25" = "pm25")
 lAnio <- sort((unique(substr(mydata$date, 7,10))))
 lProvincia <- c("Todas" = "TODAS","Avila" = "AVILA", "Burgos" = "BURGOS", "Leon" = "LEON", "Palencia" = "PALENCIA", "Salamanca" = "SALAMANCA",

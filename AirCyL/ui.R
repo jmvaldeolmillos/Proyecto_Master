@@ -26,8 +26,12 @@ library(shinydashboard)
       body <- dashboardBody(
             tabItems(
                   tabItem(tabName = "summaryplot",
-                          h2("Valores de calidad del aire generales y por provincia"),
-                          
+                          h2("Valores de calidad del aire generales."), 
+                          h3("Datos agregados para todas las estaciones."),
+                          p("Muestra la distribución de datos para todos los contaminantes en el tiempo. 
+                            Color amarillo corresponde a NA's, es decir no existe medida. Muestra valores medios.
+                            Utilizado para detección de tendencias."),
+                          p("Límites legales para NO y NO2 son: 40 microgramos/m3. y del O3 es de 120 microgramos/m3."),
                           fluidRow(
                                 box(width=12, title = "Datos genericos", status = "primary", 
                                     solidHeader = TRUE, collapsible = TRUE, plotOutput("distPlotGenerico"))
@@ -35,6 +39,12 @@ library(shinydashboard)
                           fluidRow(
                                 box(width=6, selectInput("nProvincia","Selección de Provincia:", lProvincia))
                           ),
+                          h2("Valores de los Contaminantes principales por Provincia."), 
+                          h3("Datos agregados para todas las estaciones."),                          
+                          p("Muestra la distribución de datos para todos los contaminantes en el tiempo. 
+                            Color amarillo corresponde a NA's, es decir no existe medida. Muestra valores medios.
+                            Utilizado para detección de tendencias."),
+                          p("Límites legales para NO y NO2 son: 40 microgramos/m3. y del O3 es de 120 microgramos/m3."),
                           fluidRow(
                                 box(width=12, title = "Datos por Provincia Seleccionada", 
                                     status = "primary", plotOutput("distPlotProvincia"))
@@ -42,26 +52,27 @@ library(shinydashboard)
                   ),
                   
                   tabItem(tabName = "calendarplot",
-                          h2("Comportamiento de cada Componente por día y por Provincia"),
-                          
+                          h2("Comportamiento de cada Contaminante por día y por Provincia"),
+                          p("Datos de Contaminante calendarizado. Se muestran los valores mediante escala de color."),
                           fluidRow(
                               box(width=4, selectInput("n2Provincia","Provincia:", lProvincia)),
                               box(width=4, selectInput("n2Anio","Año:", lAnio)),
-                              box(width=4, selectInput("n2Pollutant","Componente químico:",lPollutant))
+                              box(width=4, selectInput("n2Pollutant","Contaminante:",lPollutant))
                               ),
                           
                           fluidRow(
-                              box(width=12, title = "Calendario por Componente Provincia y Año", 
+                              box(width=12, title = "Calendario por Contaminante Provincia y Año", 
                                   status = "primary", plotOutput("distPlotCalendar"))
                               )
                   ),
                   
                   tabItem(tabName = "timeplot",
-                          h2("Comportamiento de cada Componente a lo largo del tiempo"),
+                          h2("Comportamiento de cada Contaminante a lo largo del tiempo"),
+                          p("Muestra los contaminantes principales a lo largo de una serie de tiempo agregado por estación."),
+                          p("Límites legales para NO y NO2 son: 40 microgramos/m3. y del O3 es de 120 microgramos/m3."),
                           fluidRow(
-                              box(width=4, selectInput("n3Month","Mes:", lMonth)),
-                              box(width=4, selectInput("n3Anio","Año:", lAnio)),
-                              box(width=4, selectInput("n3Provincia","Provincia:",lProvincia))
+                              box(width=4, selectInput("n3Provincia","Provincia:",lProvincia)),
+                              box(width=4, selectInput("n3Anio","Año:",lAnio))
                           ),
                           
                           fluidRow(
@@ -71,40 +82,41 @@ library(shinydashboard)
                   ),
                   
                   tabItem(tabName = "smoothtrend",
-                          h2("Tendencia de cada Componente por día del año"),
+                          h2("Tendencia de cada Contaminante por día del año"),
                           fluidRow(
                                 box(width=4, selectInput("n4Provincia","Provincia:",lProvincia)),
-                                box(width=4, selectInput("n4Pollutant","Componente químico:",lPollutant))
+                                box(width=4, selectInput("n4Pollutant","Contaminante:",lPollutant))
                           ),
                           
                           fluidRow(
-                                box(width=12, title = "Tendencia de cada Componente por día del año", 
+                                box(width=12, title = "Tendencia de cada Contaminante por día del año", 
                                     status = "primary", plotOutput("distSmoothTrend"))
                           )
                   ),
                   
                   tabItem(tabName = "timevariation",
-                          h2("Variación de cada Componente en el tiempo"),
+                          h2("Variación de cada Contaminante en el tiempo"),
+                          p("Distribución de los contaminantes por horas del día y meses del año. Detección de mayor y menor distribución."),
                           fluidRow(
                                 box(width=4, selectInput("n5Provincia","Provincia:",lProvincia))
                           ),
                           
                           fluidRow(
-                                box(width=12, title = "Variación de cada Componente en el tiempo", 
+                                box(width=12, title = "Variación de cada Contaminante en el tiempo", 
                                     status = "primary", plotOutput("distTimeVariation"))
                           )
                   ),
                   
                   tabItem(tabName = "scatterplot",
-                          h2("Comportamiento de cada Componente"),
+                          h2("Comportamiento de cada Contaminante"),
                           
                           fluidRow(
                                 box(width=4, selectInput("n6Provincia","Provincia:",lProvincia)),
                                 box(width=4, selectInput("n6Anio","Año:",lAnio))
                           ),
                           fluidRow(
-                                box(width=4, selectInput("n6EjeX","Componente en eje X:",lPollutant)),
-                                box(width=4, selectInput("n6EjeY","Componente en eje Y:",lPollutant)),
+                                box(width=4, selectInput("n6EjeX","Contaminante en eje X:",lPollutant)),
+                                box(width=4, selectInput("n6EjeY","Contaminante en eje Y:",lPollutant)),
                                 box(width=4, selectInput("n6Method","Metodo:",c("hexbin"="hexbin", "density"="density")))
                           ),
                           
@@ -115,17 +127,17 @@ library(shinydashboard)
                   ),
                   
                   tabItem(tabName = "linealrelation",
-                          h2("Relaciones entre Componentes a lo largo del tiempo"),
+                          h2("Relaciones entre Contaminantes a lo largo del tiempo"),
                           
                           fluidRow(
                                 box(width=4, selectInput("n7Provincia","Provincia:",lProvincia)),
-                                box(width=4, selectInput("n7EjeX","Componente en eje X:",lPollutant)),
-                                box(width=4, selectInput("n7EjeY","Componente en eje Y:",lPollutant))
+                                box(width=4, selectInput("n7EjeX","Contaminante en eje X:",lPollutant)),
+                                box(width=4, selectInput("n7EjeY","Contaminante en eje Y:",lPollutant))
                                
                           ),
                           
                           fluidRow(
-                                box(width=12, title = "Relaciones entre dos Componetes a lo largo del tiempo", 
+                                box(width=12, title = "Relaciones entre dos Contaminantes a lo largo del tiempo", 
                                     status = "primary", plotOutput("distLinealRelationSum"))
                           )
                   ),
@@ -144,22 +156,22 @@ library(shinydashboard)
                           )
                   ),
                   tabItem(tabName = "theilsend",
-                          h2("Tendencias de componentes a lo largo del tiempo"),
+                          h2("Tendencias de Contaminantes a lo largo del tiempo"),
                           
                           fluidRow(
                                 box(width=4, selectInput("n10Provincia","Provincia:",lProvincia)),
-                                box(width=4, selectInput("n10Pollutant","Componente:",lPollutant))
+                                box(width=4, selectInput("n10Pollutant","Contaminante:",lPollutant))
                                 
                           ),
                           
                           fluidRow(
-                                box(width=12, title = "Tendencias de componentes a lo largo del tiempo", 
+                                box(width=12, title = "Tendencias de Contaminantes a lo largo del tiempo", 
                                     status = "primary", plotOutput("distTheilSend"))
                           )
                   ),
                   tabItem(tabName = "mapssituation",
                           h2("Situacion geografica de las estaciones"),
-                          
+                          p("Situación actual de cada estación por Provincia. Posibilidad de filtro por estaciones activas o no."),
                           fluidRow(
                                 box(width=3, selectInput("n9Provincia","Provincia:",lProvincia)),
                                 box(width=3, selectInput("n9Actividad","Con actividad:",c("Todas" = "Todas", "Si" = "Si", "No" = "No"))),
@@ -174,22 +186,22 @@ library(shinydashboard)
                           )
                   ),
                   tabItem(tabName = "pollutantmaps",
-                          h2("Cantidad de Componente por provincia"),
+                          h2("Cantidad de Contaminante por provincia"),
                           
                           fluidRow(
-                                box(width=4, selectInput("n11Pollutant","Componente químico:",lPollutant))
+                                box(width=4, selectInput("n11Pollutant","Contaminante:",lPollutant))
                           ),
                           
                           fluidRow(
-                                box(width=12, title = "Medición de Anual de Componente por Provincia", collapsible = TRUE,
+                                box(width=12, title = "Medición de Anual de Contaminante por Provincia", collapsible = TRUE,
                                     status = "primary", plotOutput("distPlotAnnual"))
                           ),
                           fluidRow(
-                                box(width=12, title = "Media de Componente por Provincia y Estación del Año", collapsible = TRUE,
+                                box(width=12, title = "Media de Contaminante por Provincia y Estación del Año", collapsible = TRUE,
                                     status = "primary", plotOutput("distPlotMeans"))
                           ),
                           fluidRow(
-                                box(width=12, title = "Máxima de Componente por Provincia y Estación del Año", collapsible = TRUE,
+                                box(width=12, title = "Máxima de Contaminante por Provincia y Estación del Año", collapsible = TRUE,
                                     status = "primary", plotOutput("distPlotPeaks"))
                           )
                   )

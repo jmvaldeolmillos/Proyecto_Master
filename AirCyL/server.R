@@ -64,12 +64,12 @@ shinyServer(function(input, output) {
             # draw the Graphic
             if (input$n9Provincia != "TODAS")
                   if(nActividad != "Todas") {
-                        map <- get_map(location = nProvincia, scale=1, zoom = nZoom, source="google", maptype = "terrain")
+                        map <- get_map(location = "Valladolid", scale=1, zoom = nZoom, source="google", maptype = "terrain")
                         mapPoints <- ggmap(map) + geom_point(aes(x = longitude, y = latitude), 
                                                              data = subset(mydata, province == nProvincia && operative == nActividad), color="blue", size=nSize, alpha = nAlpha)
                   }
             else {
-                  map <- get_map(location = nProvincia, scale=1, zoom = nZoom, source="google", maptype = "terrain")
+                  map <- get_map(location = "Valladolid", scale=1, zoom = nZoom, source="google", maptype = "terrain")
                   mapPoints <- ggmap(map) + geom_point(aes(x = longitude, y = latitude), 
                                                        data = subset(mydata, province == nProvincia), color="blue", size=nSize, alpha = nAlpha)
             }
@@ -88,16 +88,15 @@ shinyServer(function(input, output) {
             mapPoints
       })
       output$distTimePlot <- renderPlot({
-            nMonth <- input$n3Month
-            nAnio <- input$n3Anio
             nProvincia <- input$n3Provincia
+            nAnio <- as.integer(input$n3Anio)
             # draw the Graphic
             if (input$n3Provincia != "TODAS")
-                  timePlot(subset(mydata, province == nProvincia), year = nAnio, month = nMonth,
-                           pollutant = c("nox", "no2", "o3", "so2"), type = 'site')            
+                  timePlot(selectByDate(subset(mydata, province == nProvincia), year = nAnio),
+                           pollutant = c("nox", "no2", "o3"), type = 'site')            
             else
-                  timePlot(mydata, year = nAnio, month = nMonth,
-                           pollutant = c("nox", "no2", "o3", "so2"), type = 'site')
+                  timePlot(selectByDate(mydata, year = nAnio),
+                           pollutant = c("nox", "no2", "o3"), type = 'site')
       })
       output$distTimeVariation <- renderPlot({
             nProvincia <- input$n5Provincia
