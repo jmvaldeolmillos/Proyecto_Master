@@ -145,10 +145,10 @@ shinyServer(function(input, output) {
             # draw the Graphic
             if (input$n8Provincia != "TODAS")
                   trendLevel(subset(mydata, province == nProvincia), x="nox", y="no2", 
-                             pollutant = "o3", border="white", n.levels=10, statistic = "max", limits = c(0,50))
+                             pollutant = "o3", border="white", n.levels=10, statistic = "mean", limits = c(0,100))
             else
                   trendLevel(mydata, x="nox", y="no2", 
-                             pollutant = "o3", border="white", n.levels=10, statistic = "max", limits = c(0,50)) 
+                             pollutant = "o3", border="white", n.levels=10, statistic = "mean", limits = c(0,100)) 
             })
       output$distSmoothTrend <- renderPlot({
             nProvincia <- input$n4Provincia

@@ -83,6 +83,9 @@ library(shinydashboard)
                   
                   tabItem(tabName = "smoothtrend",
                           h2("Tendencia de cada Contaminante por día del año"),
+                          p("El gráfico muestra y calcula tendencias suaves en las concentraciones medias mensuales de contaminantes. 
+                            Se crea gráfico de las concentraciones mensuales y ajusta una línea con los intervalos de confianza del 95% del ajuste."),
+                          
                           fluidRow(
                                 box(width=4, selectInput("n4Provincia","Provincia:",lProvincia)),
                                 box(width=4, selectInput("n4Pollutant","Contaminante:",lPollutant))
@@ -109,6 +112,9 @@ library(shinydashboard)
                   
                   tabItem(tabName = "scatterplot",
                           h2("Comportamiento de cada Contaminante"),
+                          p("Muestra el gráfico de relación entre dos contaminantes con posibilidad de seleccionar año y provincia a estudiar.
+                            Existe la posibilidad de elección de dos métodos de visualización: hexbin y density."),
+                          p("Se debeb seleccionar 2 contaminantes DIFERENTES para cada eje X e Y."),
                           
                           fluidRow(
                                 box(width=4, selectInput("n6Provincia","Provincia:",lProvincia)),
@@ -128,6 +134,10 @@ library(shinydashboard)
                   
                   tabItem(tabName = "linealrelation",
                           h2("Relaciones entre Contaminantes a lo largo del tiempo"),
+                          p("Muestra la relación lineal entre 2 contaminantes. Se calcula mediante un modelo lineal con intervalo 
+                            de confianza del 95%. Su utilización determina si hay relación consistente entre esos contaminantes.
+                            Útil para obtener información sobre la fuente de emisión y cómo cambia."),
+                          p("Se debeb seleccionar 2 contaminantes DIFERENTES para cada eje X e Y."),
                           
                           fluidRow(
                                 box(width=4, selectInput("n7Provincia","Provincia:",lProvincia)),
@@ -143,20 +153,24 @@ library(shinydashboard)
                   ),
                   
                   tabItem(tabName = "trendlevel",
-                          h2("Niveles de tendencia a lo largo del tiempo"),
-                          
+                          h2("Tendencia a lo largo del tiempo del O3 respecto al NOx y NO2"),
+                          p("Muestra cómo el Ozono (O3) varía de acuerdo al intervalo de otras dos variables: 
+                            Eje X: NOx, Eje Y: NO2. El estadístico usado es la MEDIA."),                       
                           fluidRow(
                                 box(width=4, selectInput("n8Provincia","Provincia:",lProvincia))
                                 
                           ),
                           
                           fluidRow(
-                                box(width=12, title = "Niveles de tendencia a lo largo del tiempo", 
+                                box(width=12, title = "Tendencia a lo largo del tiempo del O3 respecto al NOx y NO2", 
                                     status = "primary", plotOutput("distTrendLevel"))
                           )
                   ),
                   tabItem(tabName = "theilsend",
                           h2("Tendencias de Contaminantes a lo largo del tiempo"),
+                          p("Gráfico que muestra las tendencias en las concentraciones de contaminantes a lo largo del tiempo.
+                             Junto a cada estimación aparece la estimación de la tendencia de la forma:
+                            p <0,001 = * * *, p <0,01 ** = p <0,05 = * y p <0,1 = +."),
                           
                           fluidRow(
                                 box(width=4, selectInput("n10Provincia","Provincia:",lProvincia)),
