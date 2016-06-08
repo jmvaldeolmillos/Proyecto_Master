@@ -4,7 +4,7 @@ library(RSQLite)
 
 # connect to the sqlite file
 sqlite <- dbDriver("SQLite")
-con <- dbConnect(sqlite,"~/Documents/Repos/Proyecto_Master/airqualityCyL.db")
+con <- dbConnect(sqlite,"airqualityCyL.db")
 alltables <- dbListTables(con)
 
 # creacion de data frames

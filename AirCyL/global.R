@@ -8,7 +8,7 @@ if (!require("ggmap")) install.packages("ggmap")
 library(ggmap)
 
 # Carga del fichero principal que ajusta el dataframe base
-source("~/Documents/Repos/Proyecto_Master/AirCyL/airData.R")
+source("airData.R")
 
 # Funcion de manipulado para generación de graficos
 clean_data_vis <- function(componente) {
