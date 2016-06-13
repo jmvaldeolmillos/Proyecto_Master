@@ -51,6 +51,7 @@ shinyServer(function(input, output) {
             #  draw the Graphic
             if (input$n2Provincia != "TODAS")
                   calendarPlot(subset(mydata, province == nProvincia), pollutant = nPollutant, year = nAnio)
+
             else
                   calendarPlot(mydata, pollutant = nPollutant, year = nAnio)
       })
@@ -93,7 +94,7 @@ shinyServer(function(input, output) {
             # draw the Graphic
             if (input$n3Provincia != "TODAS")
                   timePlot(selectByDate(subset(mydata, province == nProvincia), year = nAnio),
-                           pollutant = c("nox", "no2", "o3"), type = 'site')            
+                              pollutant = c("nox", "no2", "o3"), type = 'site')   
             else
                   timePlot(selectByDate(mydata, year = nAnio),
                            pollutant = c("nox", "no2", "o3"), type = 'site')
