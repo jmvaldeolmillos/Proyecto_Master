@@ -2,8 +2,8 @@ name: AirCyL
 account: jmvaldeolmillos
 server: shinyapps.io
 appId: 107533
-bundleId: 478026
+bundleId: 478673
 url: https://jmvaldeolmillos.shinyapps.io/AirCyL/
-when: 1465638732.09889
+when: 1465754306.09446
 asMultiple: FALSE
 asStatic: FALSE

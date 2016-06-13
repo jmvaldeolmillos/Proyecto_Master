@@ -18,7 +18,7 @@ library(shinydashboard)
                   menuItem("Lineal Relation", tabName = "linealrelation", icon = icon("line-chart")),
                   menuItem("Trend Level", tabName = "trendlevel", icon = icon("signal")),
                   menuItem("Smooth Trend", tabName = "smoothtrend", icon = icon("area-chart")),
-                  menuItem("Theil Send", tabName = "theilsend", icon = icon("signal")),
+                  menuItem("Theil-Sen", tabName = "theil-sen", icon = icon("signal")),
                   menuItem("Pollution Maps", tabName = "pollutantmaps", icon = icon("map"))
             )
       )
@@ -26,12 +26,12 @@ library(shinydashboard)
       body <- dashboardBody(
             tabItems(
                   tabItem(tabName = "summaryplot",
-                          h2("Valores de calidad del aire generales."), 
+                          h2("Valores generales de calidad del aire en Castilla y León"), 
                           h3("Datos agregados para todas las estaciones."),
                           p("Muestra la distribución de datos para todos los contaminantes en el tiempo. 
                             Color amarillo corresponde a NA's, es decir no existe medida. Muestra valores medios.
                             Utilizado para detección de tendencias."),
-                          p("Límites legales para NO y NO2 son: 40 microgramos/m3. y del O3 es de 120 microgramos/m3."),
+                          p("Límites legales para NO y NO2: 40 microgramos/m3. y del O3 es de 120 microgramos/m3."),
                           fluidRow(
                                 box(width=12, title = "Datos genericos", status = "primary", 
                                     solidHeader = TRUE, collapsible = TRUE, plotOutput("distPlotGenerico"))
@@ -44,7 +44,7 @@ library(shinydashboard)
                           p("Muestra la distribución de datos para todos los contaminantes en el tiempo. 
                             Color amarillo corresponde a NA's, es decir no existe medida. Muestra valores medios.
                             Utilizado para detección de tendencias."),
-                          p("Límites legales para NO y NO2 son: 40 microgramos/m3. y del O3 es de 120 microgramos/m3."),
+                          p("Límites legales para NO y NO2: 40 microgramos/m3. y del O3 es de 120 microgramos/m3."),
                           fluidRow(
                                 box(width=12, title = "Datos por Provincia Seleccionada", 
                                     status = "primary", plotOutput("distPlotProvincia"))
@@ -69,7 +69,7 @@ library(shinydashboard)
                   tabItem(tabName = "timeplot",
                           h2("Comportamiento de cada Contaminante a lo largo del tiempo"),
                           p("Muestra los contaminantes principales a lo largo de una serie de tiempo agregado por estación."),
-                          p("Límites legales para NO y NO2 son: 40 microgramos/m3. y del O3 es de 120 microgramos/m3."),
+                          p("Límites legales para NO y NO2: 40 microgramos/m3. y del O3 es de 120 microgramos/m3."),
                           fluidRow(
                               box(width=4, selectInput("n3Provincia","Provincia:",lProvincia)),
                               box(width=4, selectInput("n3Anio","Año:",lAnio))
@@ -166,7 +166,7 @@ library(shinydashboard)
                                     status = "primary", plotOutput("distTrendLevel"))
                           )
                   ),
-                  tabItem(tabName = "theilsend",
+                  tabItem(tabName = "theil-sen",
                           h2("Tendencias de Contaminantes a lo largo del tiempo"),
                           p("Gráfico que muestra las tendencias en las concentraciones de contaminantes a lo largo del tiempo.
                              Junto a cada estimación aparece la estimación de la tendencia de la forma:
@@ -180,12 +180,12 @@ library(shinydashboard)
                           
                           fluidRow(
                                 box(width=12, title = "Tendencias de Contaminantes a lo largo del tiempo", 
-                                    status = "primary", plotOutput("distTheilSend"))
+                                    status = "primary", plotOutput("distTheilSen"))
                           )
                   ),
                   tabItem(tabName = "mapssituation",
-                          h2("Situacion geografica de las estaciones"),
-                          p("Situación actual de cada estación por Provincia. Posibilidad de filtro por estaciones activas o no."),
+                          h2("Situación geográfica de las estaciones de medición"),
+                          p("Situación actual de cada estación por provincia. Posibilidad de filtro por estaciones activas o no."),
                           fluidRow(
                                 box(width=3, selectInput("n9Provincia","Provincia:",lProvincia)),
                                 box(width=3, selectInput("n9Actividad","Con actividad:",c("Todas" = "Todas", "Si" = "Si", "No" = "No"))),

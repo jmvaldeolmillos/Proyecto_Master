@@ -161,7 +161,7 @@ shinyServer(function(input, output) {
                   smoothTrend(mydata, pollutant = nPollutant, 
                               ylab = "concentration (ppb)",main = paste("Media mensual", nPollutant))      
       })   
-      output$distTheilSend <- renderPlot({
+      output$distTheilSen <- renderPlot({
             nProvincia <- input$n10Provincia
             nPollutant <- grep(input$n10Pollutant, colnames(mydata))
             
